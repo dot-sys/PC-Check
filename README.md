@@ -2,6 +2,7 @@
 Simple tool to safely dump system logs in PC Check.
 This will be fully local, no data will be externally collected.
 Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
+Tool is open for everybody to look into the code.
 
 ### Usage of other Software
 The script invokes the following CLI tools:
