@@ -3,13 +3,14 @@
 #
 # Author:
 # Created by dot-sys under GPL-3.0 license
+# This script is not related to any external Project.
 #
 # Usage:
 # Use with Powershell 5.1 and NET 4.0 or higher.
 # Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
 # It is advised not to use this on your own.
 #
-# Version 0.95
+# Version 1.0
 # 19 - August - 2024
 
 $configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
