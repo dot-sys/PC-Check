@@ -189,7 +189,11 @@ $processList = $processList1 + $processList2 + $processlist3
 $uptime = foreach ($entry in $processList.GetEnumerator()) {
     $service = $entry.Key
     $pidVal = $entry.Value
-    if ($null -ne $pidVal) {
+
+    if ($pidVal -eq 0) {
+        [PSCustomObject]@{ Service = $service; Uptime = 'Stopped' }
+    }
+    elseif ($null -ne $pidVal) {
         $process = Get-Process -Id $pidVal -ErrorAction SilentlyContinue
         if ($process) {
             $uptime = (Get-Date) - $process.StartTime
