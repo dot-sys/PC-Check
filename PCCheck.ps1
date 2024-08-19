@@ -301,7 +301,7 @@ $threats3 = "`nThreats:`n" + ((Get-MpThreatDetection | Select-Object -ExpandProp
 Write-Host "   Dumping WinsearchDB"-ForegroundColor yellow
 Stop-Service wsearch -Force
 Copy-Item C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb $winsearchpath\Windows.edb -Force
-C:\temp\dump\SQLECmd\SQLECmd.exe -f "C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows-gather.db" --csv "C:\temp\dump\Winsearch"
+C:\temp\dump\SQLECmd\SQLECmd.exe -f "C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows-gather.db" --csv "C:\temp\dump\Winsearch" --csvf Winsearch.csv | Out-Null
 C:\temp\dump\ESEDatabaseView.exe /table "$winsearchpath\Windows.edb" "SystemIndex_PropertyStore" /scomma $winsearchpath\WinSearchDB.csv /Columns "4565-System_ParsingName,4562-System_OriginalFileName,4443-System_ItemNameDisplay,4183-System_Company,4106-System_ThumbnailCahceID,4431-System_IsEntrypted,4447-System_ItemPathDisplay"
 (Get-Date).ToString("MMMM d, yyyy HH:mm:ss") | Out-File -FilePath "C:\Windows\System32\Info.txt" -Append
 
