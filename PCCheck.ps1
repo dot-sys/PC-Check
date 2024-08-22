@@ -10,7 +10,7 @@
 # Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
 # It is advised not to use this on your own.
 #
-# Version 1.0
+# Version 1.1
 # 19 - August - 2024
 
 $configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
@@ -71,12 +71,12 @@ if ((Read-Host "`n`n`nThis program requires 1GB of free disk space on your Syste
     $files = @(
         @{url = "https://github.com/glmcdona/strings2/releases/download/v2.0.0/strings2.exe"; path = "C:\temp\dump\strings2.exe" }
         @{url = "https://www.nirsoft.net/utils/esedatabaseview.zip"; path = "C:\temp\dump\esedatabaseview.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/PECmd.zip"; path = "C:\temp\dump\PECmd.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/EvtxECmd.zip"; path = "C:\temp\dump\EvtxECmd.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/WxTCmd.zip"; path = "C:\temp\dump\WxTCmd.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/SBECmd.zip"; path = "C:\temp\dump\SBECmd.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/RECmd.zip"; path = "C:\temp\dump\RECmd.zip" }
-        @{url = "https://f001.backblazeb2.com/file/EricZimmermanTools/AppCompatCacheParser.zip"; path = "C:\temp\dump\AppCompatCacheParser.zip" }
+        @{url = "https://download.mikestammer.com/PECmd.zip"; path = "C:\temp\dump\PECmd.zip" }
+        @{url = "https://download.mikestammer.com/EvtxECmd.zip"; path = "C:\temp\dump\EvtxECmd.zip" }
+        @{url = "https://download.mikestammer.com/WxTCmd.zip"; path = "C:\temp\dump\WxTCmd.zip" }
+        @{url = "https://download.mikestammer.com/SBECmd.zip"; path = "C:\temp\dump\SBECmd.zip" }
+        @{url = "https://download.mikestammer.com/RECmd.zip"; path = "C:\temp\dump\RECmd.zip" }
+        @{url = "https://download.mikestammer.com/AppCompatCacheParser.zip"; path = "C:\temp\dump\AppCompatCacheParser.zip" }
     )
 
     $webClients = @()
