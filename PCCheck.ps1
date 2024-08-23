@@ -809,13 +809,13 @@ do {
     switch ($choice) {
         1 {
             Write-Host "`n`nDownloading Timeline Explorer..." -ForegroundColor yellow
-            (New-Object System.Net.WebClient).DownloadFile("https://f001.backblazeb2.com/file/EricZimmermanTools/net6/TimelineExplorer.zip", "C:\temp\TimelineExplorer.zip")
+            (New-Object System.Net.WebClient).DownloadFile("https://download.mikestammer.com/net6/TimelineExplorer.zip", "C:\temp\TimelineExplorer.zip")
             Write-Host "Timeline Explorer downloaded successfully." -ForegroundColor green
             Start-Sleep 5
         }
         2 {
             Write-Host "`n`nDownloading Registry Explorer..." -ForegroundColor yellow
-            (New-Object System.Net.WebClient).DownloadFile("https://f001.backblazeb2.com/file/EricZimmermanTools/net6/RegistryExplorer.zip", "C:\temp\RegistryExplorer.zip")
+            (New-Object System.Net.WebClient).DownloadFile("https://download.mikestammer.com/net6/RegistryExplorer.zip", "C:\temp\RegistryExplorer.zip")
             Write-Host "Registry Explorer downloaded successfully." -ForegroundColor green
             Start-Sleep 5
         }
