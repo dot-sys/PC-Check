@@ -10,8 +10,8 @@
 # Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
 # It is advised not to use this on your own.
 #
-# Version 1.1
-# 19 - August - 2024
+# Version 1.2
+# 27 - August - 2024
 
 $configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
 $Astra = $configJson.Astra
@@ -133,6 +133,7 @@ C:\temp\dump\SQLECmd\SQLECmd.exe --sync | Out-Null
 
 Write-Host "   Dumping Systeminformation"-ForegroundColor yellow
 $o1 = & {
+    "Script-Run-Time: $(Get-Date -Format 'dd/MM/yyyy HH:mm:ss')"
     "Connected Drives: $(Get-WmiObject Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3 -or $_.DriveType -eq 2} | ForEach-Object { "$($_.DeviceID)\" })" -join ', '
     "Volumes in Registry: $(if ($regvolumes = Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows Search\VolumeInfoCache' | ForEach-Object { $_ -replace '^.*\\([^\\]+)$', '$1' }) { $regvolumes -join ', ' } else { 'Registry Volume Cache Manipulated' })"
     "Windows Version: $((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name ProductName, CurrentBuild).ProductName), $((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name ProductName, CurrentBuild).CurrentBuild)"
@@ -758,8 +759,6 @@ $t2 = "`nSuspicious Files in Instance `r$l3"
 $t3 = "`nProcess Uptime `r$l3"
 $t4 = "`nDeleted Files `r$l3"
 
-@($Detected; $h1; $o1; $susJournal; $o6; $o7; $dnssus; $minusSettings; $t3; $sUptime; $sysUptime; $h2; $Tamperings; $h3; $Defenderstatus; $threats1; $threats2; $threats3; $h4; $eventResults; $h5; $t1; $combine; $t2; $dps1; $r; $t4; $noFilesFound) | Add-Content c:\temp\Results.txt
-
 $regRenames = Get-ChildItem -Path "$dmppath\Registry" -Filter "*.csv" -Recurse
 foreach ($file in $regRenames) {
     $newName = $file.Name -replace '^\d+_', ''
@@ -780,20 +779,28 @@ Set-Clipboard -Value $null
 cd\
 Clear-Host
 
-if ($dps4 -match "($Skript|$Hydro|$Astra|$Leet)") {
-    Write-Output "Severe Traces of Cheats found in Instance"
+$cheats1 = if ($dps4 -match "($Skript|$Hydro|$Astra|$Leet)") {
+    "Severe Traces of Cheats found in Instance"
 }
 
-if ($threats2 -match $ThreatDetection -or $threats5 -match $ThreatDetection) {
-    Write-Output "Severe Traces of Cheats found in Threat-Protection"
+$cheats2 = if ($threats2 -match $ThreatDetection -or $threats5 -match $ThreatDetection) {
+    "Severe Traces of Cheats found in Threat-Protection"
 }
 
+$cheats3 = $null
 $peRows = $peHeaders | Where-Object { $_.EntryPoint -match $entryPoint }
 if ($peRows) {
     foreach ($row in $peRows) {
-        Write-Output "Cheat Execution found in $($row.FilePath)"
+        $cheats3 += "Cheat Execution found in $($row.FilePath)`n"
     }
 }
+
+$cheats1
+$cheats2
+$cheats3
+
+@($cheats1; $cheats2; $cheats3; $h1; $o1; $susJournal; $o6; $o7; $dnssus; $minusSettings; $t3; $sUptime; $sysUptime; $h2; $Tamperings; $h3; $Defenderstatus; $threats1; $threats2; $threats3; $h4; $eventResults; $h5; $t1; $combine; $t2; $dps1; $r; $t4; $noFilesFound) | Add-Content c:\temp\Results.txt
+
 
 Write-Host "Done! Results are in C:\Temp"
 Start-Sleep 5
