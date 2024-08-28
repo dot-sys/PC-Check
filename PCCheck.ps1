@@ -36,6 +36,7 @@ $regpath = "C:\Temp\Dump\Registry"
 $shellbagspath = "C:\Temp\Dump\Shellbags"
 $shimcachepath = "C:\Temp\Dump\Shimcache"
 $winsearchpath = "C:\Temp\Dump\Winsearch"
+$scripttime = "Script-Run-Time: $(Get-Date -Format 'dd/MM/yyyy HH:mm:ss')"
 $directories = @('Timeline', 'Events\Raw', 'Journal', 'Others', 'Prefetch', 'Processes\Filtered', 'Processes\Raw', 'Registry', 'Shellbags', 'Shimcache', 'Winsearch')
 foreach ($dir in $directories) {
     New-Item -Path "$dmppath\$dir" -ItemType Directory -Force | Out-Null
@@ -133,7 +134,7 @@ C:\temp\dump\SQLECmd\SQLECmd.exe --sync | Out-Null
 
 Write-Host "   Dumping Systeminformation"-ForegroundColor yellow
 $o1 = & {
-    "Script-Run-Time: $(Get-Date -Format 'dd/MM/yyyy HH:mm:ss')"
+    $scripttime
     "Connected Drives: $(Get-WmiObject Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3 -or $_.DriveType -eq 2} | ForEach-Object { "$($_.DeviceID)\" })" -join ', '
     "Volumes in Registry: $(if ($regvolumes = Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows Search\VolumeInfoCache' | ForEach-Object { $_ -replace '^.*\\([^\\]+)$', '$1' }) { $regvolumes -join ', ' } else { 'Registry Volume Cache Manipulated' })"
     "Windows Version: $((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name ProductName, CurrentBuild).ProductName), $((Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name ProductName, CurrentBuild).CurrentBuild)"
