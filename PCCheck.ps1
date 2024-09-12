@@ -10,8 +10,8 @@
 # Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
 # It is advised not to use this on your own.
 #
-# Version 1.2
-# 27 - August - 2024
+# Version 1.3
+# 12 - September - 2024
 
 $configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
 $Astra = $configJson.Astra
@@ -775,6 +775,7 @@ Move-Item -Path "$procpath\*.txt" -Destination "$procpathfilt"
 Move-Item -Path "$dmppath\*.txt" -Destination "$procpath"
 Move-Item -Path "$dmppath\*.csv" -Destination "$procpath"
 Start-Service wsearch
+Remove-MpPreference -ExclusionPath 'C:\Temp\Dump'
 
 Set-Clipboard -Value $null
 cd\
