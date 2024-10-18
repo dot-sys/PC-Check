@@ -10,8 +10,8 @@
 # Running PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.
 # It is advised not to use this on your own.
 #
-# Version 1.3
-# 12 - September - 2024
+# Version 1.4
+# 18 - October - 2024
 
 $configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/dot-sys/cfg/master/cfg.json" 
 $Astra = $configJson.Astra
@@ -52,6 +52,76 @@ $h2 = & { $l1; "|    Tampering    |"; $l2; }
 $h3 = & { $l1; "|     Threats     |"; $l2; }
 $h4 = & { $l1; "|      Events     |"; $l2; }
 $h5 = & { $l1; "|   Executables   |"; $l2; }
+
+$searchTerms = @("USBDEVIEW", "ro9an", "aimbot", "a!mbot", "almbot", "skrift", "zauberkasten")
+$userProfile = [System.Environment]::GetFolderPath('UserProfile')
+$pathsToSearch = @(
+    [System.IO.Path]::Combine($env:APPDATA, 'Microsoft\Windows\Recent'),
+    [System.IO.Path]::Combine($env:APPDATA, 'Microsoft\Windows\Explorer\Quick Access'),
+    [System.IO.Path]::GetTempPath(),
+    [System.IO.Path]::Combine($userProfile, 'Downloads'),
+    [System.IO.Path]::Combine($userProfile, 'Documents'),
+    [System.IO.Path]::Combine($userProfile, 'Desktop'),
+    'C:\ProgramData',
+    'C:\Windows\Temp'
+)
+
+$quickCheckFiles = @()
+
+foreach ($path in $pathsToSearch) {
+    if (Test-Path $path) {
+        foreach ($searchTerm in $searchTerms) {
+            $files = Get-ChildItem -Path $path -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "*$searchTerm*" }
+            $quickCheckFiles += $files
+        }
+    }
+}
+
+if ($quickCheckFiles.Count -gt 0) {
+    Write-Host "Suspicious files found in:"
+    $quickCheckFiles | ForEach-Object { Write-Host $_.FullName }
+
+    $response = Read-Host "Continue regardless? (Y / N / O)"
+    
+    switch ($response.ToUpper()) {
+        'Y' {
+            Write-Host "Continuing the script..."
+            # Continue with additional logic here if needed
+        }
+        'N' {
+            Write-Host "Closing PowerShell in 5 seconds..."
+            Start-Sleep -Seconds 5
+            Exit
+        }
+        'O' {
+            $foldersToOpen = $quickCheckFiles | Select-Object -ExpandProperty DirectoryName -Unique
+            foreach ($folder in $foldersToOpen) {
+                Start-Process explorer.exe $folder
+            }
+
+            $continueResponse = Read-Host "File-Paths opened. Do you want to continue? (Y / N)"
+            switch ($continueResponse.ToUpper()) {
+                'Y' {
+                    Write-Host "Continuing the script..." -Foregroundcolor Green
+                    # Continue with additional logic here if needed
+                }
+                'N' {
+                    Write-Host "Closing PowerShell in 5 seconds..." -Foregroundcolor red
+                    Start-Sleep -Seconds 5
+                    Exit
+                }
+                default {
+                    Write-Host "Invalid option. Exiting..."
+                    Exit
+                }
+            }
+        }
+        default {
+            Write-Host "Invalid option. Exiting..."
+            Exit
+        }
+    }
+}
 
 Clear-Host
 if ((Read-Host "`n`n`nThis program requires 1GB of free disk space on your System Disk.`n`n`nWe will be downloading the programs: `n`n- ESEDatabaseView by Nirsoft `n- strings2 by Geoff McDonald (more infos at split-code.com) `n- ACC Parser, PECmd, EvtxCmd, SBECmd, SQLECmd, RECmd and WxTCmd from Eric Zimmermans Tools (more infos at ericzimmerman.github.io).`n`nThis will be fully local, no data will be collected.`nIf Traces of Cheats are found, you are highly advised to reset your PC or you could face repercussions on other Servers.`nRunning PC Checking Programs, including this script, outside of PC Checks may have impact on the outcome.`nDo you agree to a PC Check and do you agree to download said tools? (Y/N)") -eq "Y") {
