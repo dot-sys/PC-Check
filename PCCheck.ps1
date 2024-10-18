@@ -86,7 +86,6 @@ if ($quickCheckFiles.Count -gt 0) {
     switch ($response.ToUpper()) {
         'Y' {
             Write-Host "Continuing the script..."
-            # Continue with additional logic here if needed
         }
         'N' {
             Write-Host "Closing PowerShell in 5 seconds..."
@@ -103,7 +102,6 @@ if ($quickCheckFiles.Count -gt 0) {
             switch ($continueResponse.ToUpper()) {
                 'Y' {
                     Write-Host "Continuing the script..." -Foregroundcolor Green
-                    # Continue with additional logic here if needed
                 }
                 'N' {
                     Write-Host "Closing PowerShell in 5 seconds..." -Foregroundcolor red
